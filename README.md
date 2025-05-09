@@ -1,4 +1,4 @@
-# Projeto de Ordenação Externa Pontuada
+#  Ordenação Externa Pontuada
 
 ## Descrição
 Este projeto implementa uma solução de ordenação externa. O algoritmo divide grandes conjuntos de dados em blocos menores que podem ser processados na memória disponível. Esses blocos são ordenados individualmente e, em seguida, combinados para obter o resultado final ordenado.
