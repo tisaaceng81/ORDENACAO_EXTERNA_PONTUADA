@@ -22,9 +22,9 @@ Após ordenar os blocos individualmente, o algoritmo intercala-os em pares. Esse
 ### Passo 3: Resultado Final Ordenado
 O processo continua até que todos os blocos tenham sido intercalados em um único conjunto de dados ordenados.
 
-## Parâmetros Configuráveis
-Você pode ajustar os seguintes parâmetros no arquivo `Simulador.py`:
-
+## Parâmetros Configuráveis na linha de Comando
+Você pode ajustar os seguintes parâmetros no modulo `Simulador.py`:
+digita no terminal: `python simulador.py --tamanho-dados 10 --intervalo-min 1 --intervalo-max 50 --limite-memoria 6 --tamanho-blocos 2 --atraso 0.3`
 - **TAMANHO_DADOS**: Número de elementos de dados a serem gerados para ordenação.
 - **INTERVALO_MIN**: Valor mínimo para os dados gerados.
 - **INTERVALO_MAX**: Valor máximo para os dados gerados.
