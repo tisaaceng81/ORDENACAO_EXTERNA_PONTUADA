@@ -22,14 +22,26 @@ Após ordenar os blocos individualmente, o algoritmo intercala-os em pares. Esse
 ### Passo 3: Resultado Final Ordenado
 O processo continua até que todos os blocos tenham sido intercalados em um único conjunto de dados ordenados.
 
-## Parâmetros Configuráveis na linha de Comando
+## Parâmetros Configuráveis no terminal de Comando
 Você pode ajustar os seguintes parâmetros no modulo `Simulador.py`:
-digita no terminal: `python simulador.py --tamanho-dados 10 --intervalo-min 1 --intervalo-max 50 --limite-memoria 6 --tamanho-blocos 2 --atraso 0.3`
-- **TAMANHO_DADOS**: Número de elementos de dados a serem gerados para ordenação.
-- **INTERVALO_MIN**: Valor mínimo para os dados gerados.
-- **INTERVALO_MAX**: Valor máximo para os dados gerados.
-- **LIMITE_MEMORIA**: Limite de memória disponível para processar os dados (número máximo de elementos que podem ser carregados de uma vez).
-- **TAMANHO_BLOCOS**: O tamanho de cada bloco a ser lido e ordenado.
+- digita no terminal de comando: python simulador.py <tamanho_dados> [--intervalo_min=N] [--intervalo_max=N] [--limite_memoria=N] [--atraso=F] [--tamanho_blocos=N]
+
+<tamanho_dados>: Obrigatório. O número total de dados a serem gerados. Exemplo: 10.
+
+--intervalo_min=N: Valor mínimo dos dados a serem gerados. O padrão é 1. Exemplo: --intervalo_min=5.
+
+--intervalo_max=N: Valor máximo dos dados a serem gerados. O padrão é 100. Exemplo: --intervalo_max=50.
+
+--limite_memoria=N: Limite de memória disponível para a ordenação. O padrão é 6. Exemplo: --limite_memoria=5.
+  
+--atraso=F: Opcional. Atraso entre as etapas da simulação, em segundos. O padrão é 0.3. Exemplo: --atraso=0.5.
+--tamanho_blocos=N: Tamanho dos blocos lidos em memória durante a simulação. O padrão é 2. Exemplo: --tamanho_blocos=4.
+-- (obs: se ao digitar o numero de blocos maior que a memoria, surgirá uma mensagem de erro "memoria nao suportado" automaticamente
+o sistema ajustará para o tamanho igual ao da memoria)
+
+Exemplos de Comandos no Terminal:
+1) python simulador.py 10 --atraso=0.3
+2) python simulador.py 10 --atraso=0.2 --intervalo_min=5
 
 ## Complexidade do Algoritmo
 
@@ -48,7 +60,7 @@ O algoritmo de ordenação externa combina a técnica do Merge Sort para ordenar
 2. **Intercalação das Sublistas**
    Após ordenar os blocos individualmente, o algoritmo realiza a intercalação das sublistas ordenadas. Esse processo é essencialmente o Merge Sort aplicado recursivamente a sublistas menores, o que leva à mesma análise de complexidade **O(n log n)**.
 
-   - **Melhor Caso**: A intercalação pode ser feita rapidamente se as sublistas estiverem quase ordenadas, mas ainda assim o processo de intercalação exige comparar todos os elementos, resultando em complexidade **O(n log n)**.
+    - **Melhor Caso**: A intercalação pode ser feita rapidamente se as sublistas estiverem quase ordenadas, mas ainda assim o processo de intercalação exige comparar todos os elementos, resultando em complexidade **O(n log n)**.
    
    - **Caso Médio**: O caso médio para intercalação também possui complexidade **O(n log n)**.
    
@@ -69,3 +81,8 @@ Cada bloco de dados é carregado na memória uma vez, e o número de blocos é d
 ## Referências Bibliográficas
 - **Algoritmos - Teoria e Prática**, Departamento de Computação, Centro de Ciências Exatas e Tecnologia, Universidade Federal de São Carlos.
 - **Algoritmos e Estruturas de Dados em Python**, Departamento de Computação, Centro de Ciências Exatas e Tecnologia, Universidade Federal de São Carlos.
+
+   
+
+
+ 
