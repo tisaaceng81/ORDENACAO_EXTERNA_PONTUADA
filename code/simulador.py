@@ -6,7 +6,7 @@ def exibir_ajuda():
     print("Uso: python simulador.py <quantidade_dados> [--valor_minimo=N] [--valor_maximo=N] [--limite_memoria=N] [--atraso=F] [--tamanho_blocos=N]")
     print("Parâmetros obrigatórios:")
     print("  <quantidade_dados>       Quantidade de dados a serem gerados (exemplo: '10')")
-    print("Parâmetros opcionais:")
+    print("Parâmetros outros:")
     print("  --valor_minimo=N         Valor mínimo dos dados (padrão = 1)")
     print("  --valor_maximo=N         Valor máximo dos dados (padrão = 100)")
     print("  --limite_memoria=N       Limite da memória disponível (padrão = 6)")
@@ -29,7 +29,7 @@ if len(sys.argv) >= 2:
         print("Erro: <quantidade_dados> deve ser um número inteiro.")
         exibir_ajuda()
 
-# Lê os demais parâmetros opcionais
+# Lê os demais parâmetros outros
 for i in range(2, len(sys.argv)):
     parametro = sys.argv[i]
     
