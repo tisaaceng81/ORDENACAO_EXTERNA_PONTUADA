@@ -6,7 +6,7 @@ def exibir_ajuda():
     print("Uso: python simulador.py <quantidade_dados> [--valor_minimo=N] [--valor_maximo=N] [--limite_memoria=N] [--atraso=F] [--tamanho_blocos=N]")
     print("Parâmetros obrigatórios:")
     print("  <quantidade_dados>       Quantidade de dados a serem gerados (exemplo: '10')")
-    print("Parâmetros outros:")
+    print("Parâmetros opcionais:")
     print("  --valor_minimo=N         Valor mínimo dos dados (padrão = 1)")
     print("  --valor_maximo=N         Valor máximo dos dados (padrão = 100)")
     print("  --limite_memoria=N       Limite da memória disponível (padrão = 6)")
@@ -28,8 +28,9 @@ if len(sys.argv) >= 2:
     except ValueError:
         print("Erro: <quantidade_dados> deve ser um número inteiro.")
         exibir_ajuda()
+        sys.exit(1)  # Sai se houver erro
 
-# Lê os demais parâmetros outros
+# Lê os demais parâmetros opcionais
 for i in range(2, len(sys.argv)):
     parametro = sys.argv[i]
     
@@ -47,6 +48,7 @@ for i in range(2, len(sys.argv)):
         else:
             print(f"Parâmetro desconhecido: {parametro}")
             exibir_ajuda()
+            sys.exit(1)  # Sai se houver erro
 
 # Geração dos dados aleatórios
 if valor_maximo - valor_minimo + 1 < quantidade_dados:
