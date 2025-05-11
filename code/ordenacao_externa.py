@@ -9,98 +9,101 @@ class OrdenacaoExterna:
         self.dados = dados
         self.limite_memoria = limite_memoria
         self.atraso = atraso
-        self.sublistas = []
+        self.sublistas = Vetor(len(dados))  # Substituição de lista padrão
         self.passadas_intercalacao = 0
         self.passadas_merge_sort = 0
-        self.comparacoes_merge_sort = 0  # Contador de comparações
+        self.comparacoes_merge_sort = 0
         self.tamanho_blocos = min(tamanho_blocos, self.limite_memoria)
 
     def _ler_bloco(self, dados, inicio, tamanho):
-        bloco = dados[inicio:inicio + tamanho]
-        print(f"Lendo bloco: {bloco}")
+        bloco = Vetor(min(tamanho, len(dados) - inicio))
+        for i in range(bloco.capacidade):
+            bloco.inserir(i, dados[inicio + i])
+        print(f"Lendo bloco: {bloco.para_lista()}")
         time.sleep(self.atraso)
         return bloco
 
-    def _intercalar_duas_listas(self, lista1, lista2):
-        print(f"-> Junção: {lista1} + {lista2}")
-        resultado = Vetor(len(lista1) + len(lista2))
+    def _intercalar_duas_listas(self, v1, v2):
+        print(f"-> Junção: {v1.para_lista()} + {v2.para_lista()}")
+        resultado = Vetor(v1.tamanho() + v2.tamanho())
         i = j = 0
-        while i < len(lista1) and j < len(lista2):
+        while i < v1.tamanho() and j < v2.tamanho():
             self.comparacoes_merge_sort += 1
-            if lista1[i] <= lista2[j]:
-                resultado.inserir(resultado.tamanho(), lista1[i])
+            if v1.obter(i) <= v2.obter(j):
+                resultado.inserir(resultado.tamanho(), v1.obter(i))
                 i += 1
             else:
-                resultado.inserir(resultado.tamanho(), lista2[j])
+                resultado.inserir(resultado.tamanho(), v2.obter(j))
                 j += 1
             time.sleep(self.atraso)
-        while i < len(lista1):
-            resultado.inserir(resultado.tamanho(), lista1[i])
+        while i < v1.tamanho():
+            resultado.inserir(resultado.tamanho(), v1.obter(i))
             i += 1
-        while j < len(lista2):
-            resultado.inserir(resultado.tamanho(), lista2[j])
+        while j < v2.tamanho():
+            resultado.inserir(resultado.tamanho(), v2.obter(j))
             j += 1
-        resultado_lista = resultado.para_lista()
-        print(f"-> Resultado da junção: {resultado_lista}")
-        return resultado_lista
+        print(f"-> Resultado da junção: {resultado.para_lista()}")
+        return resultado
 
-    def _merge_sort(self, lista):
+    def _merge_sort(self, vetor):
         self.passadas_merge_sort += 1
-        print(f"Passada Merge Sort {self.passadas_merge_sort}: {lista}")
-        if len(lista) <= 1:
-            return lista
+        print(f"Passada Merge Sort {self.passadas_merge_sort}: {vetor.para_lista()}")
+        if vetor.tamanho() <= 1:
+            return vetor
 
-        meio = len(lista) // 2
-        esquerda = self._merge_sort(lista[:meio])
-        direita = self._merge_sort(lista[meio:])
+        meio = vetor.tamanho() // 2
+        esquerda = Vetor(meio)
+        direita = Vetor(vetor.tamanho() - meio)
+
+        for i in range(meio):
+            esquerda.inserir(i, vetor.obter(i))
+        for i in range(meio, vetor.tamanho()):
+            direita.inserir(i - meio, vetor.obter(i))
 
         # Comparação simples entre extremos
-        if max(esquerda) > min(direita):
+        if esquerda.obter(esquerda.tamanho() - 1) > direita.obter(0):
             print("Comparando extremidades: esquerda > direita")
-        elif max(esquerda) < min(direita):
+        elif esquerda.obter(esquerda.tamanho() - 1) < direita.obter(0):
             print("Comparando extremidades: esquerda < direita")
         else:
             print("Comparando extremidades: esquerda == direita")
 
-        return self._intercalar_duas_listas(esquerda, direita)
+        return self._intercalar_duas_listas(
+            self._merge_sort(esquerda),
+            self._merge_sort(direita)
+        )
 
     def gerar_sublistas(self):
         print("=== FASE 1: Geração de sublistas ===")
         for i in range(0, len(self.dados), self.tamanho_blocos):
             bloco = self._ler_bloco(self.dados, i, self.tamanho_blocos)
-            print(f"-> Ordenando bloco com Merge Sort: {bloco}")
+            print(f"-> Ordenando bloco com Merge Sort: {bloco.para_lista()}")
             bloco_ordenado = self._merge_sort(bloco)
-            print(f"-> Bloco ordenado: {bloco_ordenado}")
-            vetor = Vetor(len(bloco_ordenado))
-            for valor in bloco_ordenado:
-                vetor.inserir(vetor.tamanho(), valor)
-            self.sublistas.append(vetor)
+            print(f"-> Bloco ordenado: {bloco_ordenado.para_lista()}")
+            self.sublistas.inserir(self.sublistas.tamanho(), bloco_ordenado)
 
     def intercalar_sublistas(self):
         print("\n=== FASE 2: Junção das sublistas ===")
-        while len(self.sublistas) > 1:
-            novas_sublistas = []
-            for i in range(0, len(self.sublistas), 2):
-                if i + 1 < len(self.sublistas):
-                    sub1 = self.sublistas[i].para_lista()
-                    sub2 = self.sublistas[i + 1].para_lista()
-                    print(f"-> Junção: {sub1} + {sub2}")
+        while self.sublistas.tamanho() > 1:
+            novas_sublistas = Vetor(self.sublistas.tamanho() // 2 + 1)
+            i = 0
+            while i < self.sublistas.tamanho():
+                if i + 1 < self.sublistas.tamanho():
+                    sub1 = self.sublistas.obter(i)
+                    sub2 = self.sublistas.obter(i + 1)
                     time.sleep(self.atraso)
                     intercalada = self._intercalar_duas_listas(sub1, sub2)
-                    print(f"-> Resultado: {intercalada}")
                     time.sleep(self.atraso)
-                    vetor = Vetor(len(intercalada))
-                    for valor in intercalada:
-                        vetor.inserir(vetor.tamanho(), valor)
-                    novas_sublistas.append(vetor)
+                    novas_sublistas.inserir(novas_sublistas.tamanho(), intercalada)
                     self.passadas_intercalacao += 1
                 else:
-                    novas_sublistas.append(self.sublistas[i])
+                    novas_sublistas.inserir(novas_sublistas.tamanho(), self.sublistas.obter(i))
+                i += 2
             self.sublistas = novas_sublistas
 
     def _exibir_resultado(self, resultado, tempo_total):
         print("\n=== RESULTADO FINAL ===")
-        print(f"Lista ordenada: {resultado}")
+        print(f"Lista ordenada: {resultado.para_lista()}")
         print(f"Passadas de junção: {self.passadas_intercalacao}")
         print(f"Passadas de Merge Sort: {self.passadas_merge_sort}")
         print(f"Comparações no Merge Sort: {self.comparacoes_merge_sort}")
@@ -117,7 +120,7 @@ class OrdenacaoExterna:
         inicio = time.time()
         self.gerar_sublistas()
         self.intercalar_sublistas()
-        resultado_final = self.sublistas[0].para_lista() if self.sublistas else []
+        resultado_final = self.sublistas.obter(0) if self.sublistas.tamanho() > 0 else Vetor(0)
         fim = time.time()
         self._exibir_resultado(resultado_final, fim - inicio)
-        return resultado_final
+        return resultado_final.para_lista()
