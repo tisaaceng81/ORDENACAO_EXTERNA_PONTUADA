@@ -6,7 +6,7 @@ def exibir_ajuda():
     print("Uso: python simulador.py <quantidade_dados> [--valor_minimo=N] [--valor_maximo=N] [--limite_memoria=N] [--atraso=F] [--tamanho_blocos=N]")
     print("Parâmetros obrigatórios:")
     print("  <quantidade_dados>       Quantidade de dados a serem gerados (exemplo: '10')")
-    print("Parâmetros outros:")
+    print("Parâmetros opcionais:")
     print("  --valor_minimo=N         Valor mínimo dos dados (padrão = 1)")
     print("  --valor_maximo=N         Valor máximo dos dados (padrão = 100)")
     print("  --limite_memoria=N       Limite da memória disponível (padrão = 6)")
@@ -30,7 +30,7 @@ if len(sys.argv) >= 2:
         exibir_ajuda()
         sys.exit(1)  # Sai se houver erro
 
-# Lê os demais parâmetros outros
+# Lê os demais parâmetros opcionais
 for i in range(2, len(sys.argv)):
     parametro = sys.argv[i]
     
@@ -52,13 +52,13 @@ for i in range(2, len(sys.argv)):
 
 # Geração dos dados aleatórios
 if valor_maximo - valor_minimo + 1 < quantidade_dados:
-    dados = [random.randint(valor_minimo, valor_maximo) for _ in range(quantidade_dados)]
+    elementos = [random.randint(valor_minimo, valor_maximo) for _ in range(quantidade_dados)]
 else:
-    dados = random.sample(range(valor_minimo, valor_maximo + 1), quantidade_dados)
+    elementos = random.sample(range(valor_minimo, valor_maximo + 1), quantidade_dados)
 
 print("\n=== INÍCIO DA EXECUÇÃO ===")
-print(f"Dados gerados: {dados}")
+print(f"elementos gerados: {elementos}")
 
 # Criação e execução da ordenação externa
-ordenador = OrdenacaoExterna(dados, limite_memoria, atraso, tamanho_blocos)
+ordenador = OrdenacaoExterna(elementos, limite_memoria, atraso, tamanho_blocos)
 resultado = ordenador.ordenar()
