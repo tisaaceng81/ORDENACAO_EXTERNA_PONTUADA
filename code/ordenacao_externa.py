@@ -2,23 +2,23 @@ import time
 from vetor import Vetor
 
 class OrdenacaoExterna:
-    def __init__(self, dados, limite_memoria=6, atraso=0.3, tamanho_blocos=2):
+    def __init__(self, elementos, limite_memoria=6, atraso=0.3, tamanho_blocos=2):
         if tamanho_blocos > limite_memoria:
             print(f"[AVISO] Tamanho de bloco ({tamanho_blocos}) não suportado pela memória ({limite_memoria}).")
             print(f"[AÇÃO] Ajustando tamanho do bloco para {limite_memoria}.\n")
-        self.dados = dados
+        self.elementos = elementos
         self.limite_memoria = limite_memoria
         self.atraso = atraso
-        self.sublistas = Vetor(len(dados))  # Substituição de lista padrão
+        self.sublistas = Vetor(len(elementos))  # Substituição de lista padrão
         self.passadas_intercalacao = 0
         self.passadas_merge_sort = 0
         self.comparacoes_merge_sort = 0
         self.tamanho_blocos = min(tamanho_blocos, self.limite_memoria)
 
-    def _ler_bloco(self, dados, inicio, tamanho):
-        bloco = Vetor(min(tamanho, len(dados) - inicio))
-        for i in range(bloco.capacidade):
-            bloco.inserir(i, dados[inicio + i])
+    def _ler_bloco(self, elementos, inicio, tamanho):
+        bloco = Vetor(min(tamanho, len(elementos) - inicio))
+        for i in range(bloco.quantidade_maxima):
+            bloco.inserir(i, elementos[inicio + i])
         print(f"Lendo bloco: {bloco.para_lista()}")
         time.sleep(self.atraso)
         return bloco
@@ -75,8 +75,8 @@ class OrdenacaoExterna:
 
     def gerar_sublistas(self):
         print("=== FASE 1: Geração de sublistas ===")
-        for i in range(0, len(self.dados), self.tamanho_blocos):
-            bloco = self._ler_bloco(self.dados, i, self.tamanho_blocos)
+        for i in range(0, len(self.elementos), self.tamanho_blocos):
+            bloco = self._ler_bloco(self.elementos, i, self.tamanho_blocos)
             print(f"-> Ordenando bloco com Merge Sort: {bloco.para_lista()}")
             bloco_ordenado = self._merge_sort(bloco)
             print(f"-> Bloco ordenado: {bloco_ordenado.para_lista()}")
@@ -114,7 +114,7 @@ class OrdenacaoExterna:
         print(f"Limite de memória: {self.limite_memoria}")
         print(f"Tamanho dos blocos: {self.tamanho_blocos}")
         print(f"Atraso entre passos: {self.atraso} segundos")
-        print(f"Tamanho total dos dados: {len(self.dados)}")
+        print(f"Tamanho total dos dados: {len(self.elementos)}")
         print("=" * 40)
 
         inicio = time.time()
